@@ -1,0 +1,9 @@
+D:\xlsx2sql\xlsx2sql\bin\Debug\xlsx2sql.exe.config
+D:\xlsx2sql\xlsx2sql\bin\Debug\xlsx2sql.exe
+D:\xlsx2sql\xlsx2sql\bin\Debug\xlsx2sql.pdb
+D:\xlsx2sql\xlsx2sql\obj\x86\Debug\xlsx2sql.Form1.resources
+D:\xlsx2sql\xlsx2sql\obj\x86\Debug\xlsx2sql.Properties.Resources.resources
+D:\xlsx2sql\xlsx2sql\obj\x86\Debug\xlsx2sql.csproj.GenerateResource.Cache
+D:\xlsx2sql\xlsx2sql\obj\x86\Debug\xlsx2sql.exe
+D:\xlsx2sql\xlsx2sql\obj\x86\Debug\xlsx2sql.pdb
+D:\xlsx2sql\xlsx2sql\obj\x86\Debug\xlsx2sql.csprojResolveAssemblyReference.cache

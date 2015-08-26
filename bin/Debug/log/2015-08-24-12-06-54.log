@@ -1,0 +1,10 @@
+***********************************************************************
+12:06:54
+输出信息：错误信息
+异常信息：
+System.ArgumentException: 路径的形式不合法。
+   在 System.IO.Path.NormalizePath(String path, Boolean fullCheck, Int32 maxPathLength, Boolean expandShortPaths)
+   在 System.IO.Path.GetFullPathInternal(String path)
+   在 System.IO.FileSystemEnumerableIterator`1..ctor(String path, String originalUserPath, String searchPattern, SearchOption searchOption, SearchResultHandler`1 resultHandler, Boolean checkHost)
+   在 System.IO.Directory.GetFiles(String path)
+   在 xlsx2sql.Form1.button1_Click(Object sender, EventArgs e) 位置 D:\xlsx2sql\xlsx2sql\Form1.cs:行号 56
