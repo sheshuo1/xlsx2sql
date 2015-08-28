@@ -1,0 +1,9 @@
+***********************************************************************
+15:03:14
+输出信息：错误信息
+异常信息：
+System.ArgumentException: 列“card_id”不属于表 table。
+   在 System.Data.DataRow.GetDataColumn(String columnName)
+   在 System.Data.DataRow.get_Item(String columnName)
+   在 xlsx2sql.Form1.startInset(String path) 位置 D:\xlsx2sql\xlsx2sql\Form1.cs:行号 902
+   在 xlsx2sql.Form1.button1_Click(Object sender, EventArgs e) 位置 D:\xlsx2sql\xlsx2sql\Form1.cs:行号 63

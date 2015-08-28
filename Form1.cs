@@ -182,6 +182,10 @@ namespace xlsx2sql
                  {
                      label1.Text = "已选择\"t_vip\"！";
                  }
+                 else if (textBox1.Text.Trim().EndsWith("t_userLevel_conf.xlsx"))
+                 {
+                     label1.Text = "已选择\"t_userLevel_conf\"！";
+                 }
                  else
                  {
                      label1.Text = "不支持的文件！";
@@ -308,7 +312,7 @@ namespace xlsx2sql
                  }
                  //数据验证结束，提示结果，并选择是否继续导入
                  error += "是否继续导入数据？\r\n";
-                 DialogResult result = MessageBox.Show(error, "数据校验结果", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
                  //选择是，则开始导入数据
                  if (result == DialogResult.OK)
                  {
@@ -362,7 +366,7 @@ namespace xlsx2sql
                  }
                  //数据验证结束，提示结果，并选择是否继续导入
                  error += "是否继续导入数据？\r\n";
-                 DialogResult result = MessageBox.Show(error, "数据校验结果", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
                  //选择是，则开始导入数据
                  if (result == DialogResult.OK)
                  {
@@ -403,7 +407,7 @@ namespace xlsx2sql
                  }
                  //数据验证结束，提示结果，并选择是否继续导入
                  error += "是否继续导入数据？\r\n";
-                 DialogResult result = MessageBox.Show(error, "数据校验结果", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
                  //选择是，则开始导入数据
                  if (result == DialogResult.OK)
                  {
@@ -439,7 +443,7 @@ namespace xlsx2sql
                  }
                  //数据验证结束，提示结果，并选择是否继续导入
                  error += "是否继续导入数据？\r\n";
-                 DialogResult result = MessageBox.Show(error, "数据校验结果", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
                  //选择是，则开始导入数据
                  if (result == DialogResult.OK)
                  {
@@ -486,7 +490,7 @@ namespace xlsx2sql
                  }
                  //数据验证结束，提示结果，并选择是否继续导入
                  error += "是否继续导入数据？\r\n";
-                 DialogResult result = MessageBox.Show(error, "数据校验结果", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
                  //选择是，则开始导入数据
                  if (result == DialogResult.OK)
                  {
@@ -545,7 +549,7 @@ namespace xlsx2sql
                  }
                  //数据验证结束，提示结果，并选择是否继续导入
                  error += "是否继续导入数据？\r\n";
-                 DialogResult result = MessageBox.Show(error, "数据校验结果", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
                  //选择是，则开始导入数据
                  if (result == DialogResult.OK)
                  {
@@ -616,7 +620,7 @@ namespace xlsx2sql
                  }
                  //数据验证结束，提示结果，并选择是否继续导入
                  error += "是否继续导入数据？\r\n";
-                 DialogResult result = MessageBox.Show(error, "数据校验结果", MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
                  //选择是，则开始导入数据
                  if (result == DialogResult.OK)
                  {
@@ -627,80 +631,502 @@ namespace xlsx2sql
              else if (path.Trim().EndsWith("t_init_card_group.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_init_card_groupInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+
+
+                     if (di["group_id"].ToString() == null || di["group_id"].ToString() == "" || Regex.IsMatch(di["group_id"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "group_id" + "不符合规则!\r\n";
+                     }
+                     if (di["card_id"].ToString() == null || di["card_id"].ToString() == "" || Regex.IsMatch(di["card_id"].ToString().Trim(), @"^[1-9][0-9]{4}[0][1-8]$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "card_id" + "不符合规则!\r\n";
+                     }
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_init_card_groupInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_item.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_itemInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+                     for (int j = i + 1; j < count; j++)
+                     {
+
+                         DataRow dj = dt.Rows[j];
+                         if (di["item_id"].ToString().Trim() == dj["item_id"].ToString().Trim())
+                         {
+                             error += di["item_id"].ToString() + "重复!\r\n";
+                         }
+                     }
+                     if (di["item_id"].ToString() == null || di["item_id"].ToString() == "" || Regex.IsMatch(di["item_id"].ToString().Trim(), @"^[0-9]{6}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "item_id" + "不符合规则!\r\n";
+                     }
+                     if (di["item_name"].ToString() == null || di["item_name"].ToString() == "" )
+                     {
+                         error += "第" + (i + 1) + "行" + "item_name" + "不符合规则!\r\n";
+                     }
+                     if (di["item_type"].ToString() == null || di["item_type"].ToString() == "" || Regex.IsMatch(di["item_type"].ToString().Trim(), @"^[1-8]$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "item_type" + "不符合规则!\r\n";
+                     }
+                     if (di["item_desc"].ToString() == null || di["item_desc"].ToString() == "")
+                     {
+                         error += "第" + (i + 1) + "行" + "item_desc" + "不符合规则!\r\n";
+                     }
+                     if (di["type_desc"].ToString() == null || di["type_desc"].ToString() == "")
+                     {
+                         error += "第" + (i + 1) + "行" + "type_desc" + "不符合规则!\r\n";
+                     }
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_itemInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_item_comb.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_item_combInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                
+                    
+                 
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_item_combInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_item_enlarge.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_item_enlargeInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+
+
+                     if (di["add_num"].ToString() == null || di["add_num"].ToString() == "" || Regex.IsMatch(di["add_num"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "add_num" + "不符合规则!\r\n";
+                     }
+                     if (di["need_gold"].ToString() == null || di["need_gold"].ToString() == "" || Regex.IsMatch(di["need_gold"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "need_gold" + "不符合规则!\r\n";
+                     }
+                     if (di["need_item"].ToString() == null || di["need_item"].ToString() == "" || Regex.IsMatch(di["need_item"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "need_item" + "不符合规则!\r\n";
+                     }
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_item_enlargeInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_map.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_mapInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                  //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+                     for (int j = i + 1; j < count; j++)
+                     {
+
+                         DataRow dj = dt.Rows[j];
+                         if (di["map_id"].ToString().Trim() == dj["map_id"].ToString().Trim())
+                         {
+                             error += di["map_id"].ToString() + "重复!\r\n";
+                         }
+                     }
+
+                     if (di["map_id"].ToString() == null || di["map_id"].ToString() == "" || Regex.IsMatch(di["map_id"].ToString().Trim(), @"^[0-9]{5}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "map_id" + "不符合规则!\r\n";
+                     }
+                     if (di["map_name"].ToString() == null || di["map_name"].ToString() == "" )
+                     {
+                         error += "第" + (i + 1) + "行" + "map_name" + "不符合规则!\r\n";
+                     }
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_mapInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_map_group.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_map_groupInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+                     for (int j = i + 1; j < count; j++)
+                     {
+
+                         DataRow dj = dt.Rows[j];
+                         if (di["map_group_id"].ToString().Trim() == dj["map_group_id"].ToString().Trim())
+                         {
+                             error += di["map_group_id"].ToString() + "重复!\r\n";
+                         }
+                     }
+
+                     if (di["map_group_id"].ToString() == null || di["map_group_id"].ToString() == "" || Regex.IsMatch(di["map_group_id"].ToString().Trim(), @"^[0-9]{3}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "map_group_id" + "不符合规则!\r\n";
+                     }
+                   
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_map_groupInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_map_monster.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_map_monsterInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+
+                     if (di["map_id"].ToString() == null || di["map_id"].ToString() == "" || Regex.IsMatch(di["map_id"].ToString().Trim(), @"^[0-9]{5}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "map_id" + "不符合规则!\r\n";
+                     }
+                     if (di["monster_id"].ToString() == null || di["monster_id"].ToString() == "" || Regex.IsMatch(di["monster_id"].ToString().Trim(), @"^[0-9]{8}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "monster_id" + "不符合规则!\r\n";
+                     }
+                     if (di["mm_rate"].ToString() == null || di["mm_rate"].ToString() == "" || Regex.IsMatch(di["mm_rate"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "mm_rate" + "不符合规则!\r\n";
+                     }
+                     if (di["reward_name"].ToString() == null || di["reward_name"].ToString() == "" || Regex.IsMatch(di["reward_name"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "reward_name" + "不符合规则!\r\n";
+                     }
+                    
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_map_monsterInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_monster.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_monsterInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                  //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+                     
+                   
+                     if (di["monster_id"].ToString() == null || di["monster_id"].ToString() == "" || Regex.IsMatch(di["monster_id"].ToString().Trim(), @"^[0-9]{8}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "monster_id" + "不符合规则!\r\n";
+                     }
+                     if (di["monster_name"].ToString() == null || di["monster_name"].ToString() == "" )
+                     {
+                         error += "第" + (i + 1) + "行" + "monster_name" + "不符合规则!\r\n";
+                     }
+                     if (di["crit_rate"].ToString() == null || di["crit_rate"].ToString() == "" || Regex.IsMatch(di["crit_rate"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "crit_rate" + "不符合规则!\r\n";
+                     }
+                     if (di["hit_rate"].ToString() == null || di["hit_rate"].ToString() == "" || Regex.IsMatch(di["hit_rate"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "hit_rate" + "不符合规则!\r\n";
+                     }
+                     if (di["evade_rate"].ToString() == null || di["evade_rate"].ToString() == "" || Regex.IsMatch(di["evade_rate"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "evade_rate" + "不符合规则!\r\n";
+                     }
+                     if (di["head_pic"].ToString() == null || di["head_pic"].ToString() == "" || Regex.IsMatch(di["head_pic"].ToString().Trim(), @"^[1-9][0-9]{4}[0][1-8]$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "head_pic" + "不符合规则!\r\n";
+                     }
+                    
+                    
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_monsterInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_monster_card.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_monster_cardInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                    //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+                     
+                   
+                     if (di["monster_id"].ToString() == null || di["monster_id"].ToString() == "" || Regex.IsMatch(di["monster_id"].ToString().Trim(), @"^[0-9]{8}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "monster_id" + "不符合规则!\r\n";
+                     }
+                     if (di["card_id"].ToString() == null || di["card_id"].ToString() == "" || Regex.IsMatch(di["card_id"].ToString().Trim(), @"^[1-9][0-9]{4}[0][1-8]$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "card_id" + "不符合规则!\r\n";
+                     }
+                     if (di["card_name"].ToString() == null || di["card_name"].ToString() == "")
+                     {
+                         error += "第" + (i + 1) + "行" + "card_name" + "不符合规则!\r\n";
+                     }
+                    
+                    
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_monster_cardInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_monster_reward.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_monster_rewardInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+
+
+                     if (di["rg_id"].ToString() == null || di["rg_id"].ToString() == "" || Regex.IsMatch(di["rg_id"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "rg_id" + "不符合规则!\r\n";
+                     }
+                     if (!(di["r_type"].ToString() == "A" || di["r_type"].ToString() == "B" || di["r_type"].ToString() == "C" || di["r_type"].ToString() == "D"))
+                     {
+                         error += "第" + (i + 1) + "行" + "r_type" + "不符合规则!\r\n";
+                     }
+                    
+                    
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_monster_rewardInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_pvp_shop.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_pvp_shopInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                   //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+
+
+                     if (di["s_id"].ToString() == null || di["s_id"].ToString() == "" || Regex.IsMatch(di["s_id"].ToString().Trim(), @"^[0-9]{6}$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "s_id" + "不符合规则!\r\n";
+                     }
+                     if (di["s_name"].ToString() == null || di["s_name"].ToString() == "")
+                     {
+                         error += "第" + (i + 1) + "行" + "s_name" + "不符合规则!\r\n";
+                     }
+
+                     
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_pvp_shopInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_reward_group.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_reward_groupInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                     //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                 for (int i = 0; i < count; i++)
+                 {
+                     DataRow di = dt.Rows[i];
+                     for (int j = i + 1; j < count; j++)
+                     {
+
+                         DataRow dj = dt.Rows[j];
+                         if (di["id"].ToString().Trim() == dj["id"].ToString().Trim())
+                         {
+                             error += di["id"].ToString() + "重复!\r\n";
+                         }
+                     }
+
+                     if (di["id"].ToString() == null || di["id"].ToString() == "" || Regex.IsMatch(di["id"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "id" + "不符合规则!\r\n";
+                     }
+                     if (di["group_name"].ToString() == null || di["group_name"].ToString() == "" || Regex.IsMatch(di["group_name"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "s_name" + "不符合规则!\r\n";
+                     }
+                     if (di["reward_rate"].ToString() == null || di["reward_rate"].ToString() == "" || Regex.IsMatch(di["reward_rate"].ToString().Trim(), @"^[0-9]+$") == false)
+                     {
+                         error += "第" + (i + 1) + "行" + "reward_rate" + "不符合规则!\r\n";
+                     }
+                     if (!(di["is_win"].ToString() == "1" || di["is_win"].ToString() == "0") )
+                     {
+                         error += "第" + (i + 1) + "行" + "id" + "不符合规则!\r\n";
+                     }
+                     
+                    
+                    
+                    
+                 }
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_reward_groupInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else if (path.Trim().EndsWith("t_vip.xlsx"))
              {
                  System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
-                 fileSvr.t_vipInsetData(dt);
-                 label1.Text += path + "操作完成！\r\n";
+                     //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+                
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_vipInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
+             }
+             else if (path.Trim().EndsWith("t_userLevel_conf.xlsx"))
+             {
+                 System.Data.DataTable dt = fileSvr.GetExcelDatatable(path, "table");
+                 //开始进行数据验证
+                 int count = dt.Rows.Count;
+                 string error = "共有" + count + "行数据！\r\n";
+
+                 //数据验证结束，提示结果，并选择是否继续导入
+                 error += "是否继续导入数据？\r\n";
+                 DialogResult result = MessageBox.Show(error,path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
+                 //选择是，则开始导入数据
+                 if (result == DialogResult.OK)
+                 {
+                     fileSvr.t_userLevel_confInsetData(dt);
+                     label1.Text += path + "操作完成！\r\n";
+                 }
              }
              else
              {

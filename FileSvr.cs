@@ -2017,5 +2017,112 @@ namespace xlsx2sql
                 return i;
             }
 
+
+
+
+            /// <summary>
+            /// 从t_userLevel_confDataTable导入数据到t_userLevel_conf数据库
+            /// </summary>
+            /// <param name="dt"></param>
+            /// <returns></returns>
+            public int t_userLevel_confInsetData(System.Data.DataTable dt)
+            {
+                int i = 0;
+
+
+
+                string levelNum = ""; 
+                string exp = ""; 
+                string cardNum = ""; 
+                string cardGroupNum = "";
+                string fight = ""; 
+                string crit = "";
+                string hit = "";
+                string evade = "";
+                string cardBag = "";
+                string itemBag = "";
+                string main = "";
+                
+
+
+
+
+
+                string strSql1 = "truncate table t_userLevel_conf";
+                //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
+                // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
+                SqlConnection sqlConnection1 = new SqlConnection(strConnection);
+                try
+                {
+                    // SqlConnection sqlConnection = new SqlConnection(strConnection);
+                    sqlConnection1.Open();
+                    SqlCommand sqlCmd = new SqlCommand();
+                    sqlCmd.CommandText = strSql1;
+                    sqlCmd.Connection = sqlConnection1;
+                    SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
+                    i++;
+                    sqlDataReader.Close();
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError(ex.ToString());
+
+                }
+                finally
+                {
+                    sqlConnection1.Close();
+                }
+                foreach (DataRow dr in dt.Rows)
+                {
+
+
+                    levelNum = dr["levelNum"].ToString().Trim();
+                    exp = dr["exp"].ToString().Trim();
+                    cardNum = dr["cardNum"].ToString().Trim();
+                    cardGroupNum = dr["cardGroupNum"].ToString().Trim();
+                    fight = dr["fight"].ToString().Trim();
+                    crit = dr["crit"].ToString().Trim();
+                    hit = dr["hit"].ToString().Trim();
+                    evade = dr["evade"].ToString().Trim();
+                    cardBag = dr["cardBag"].ToString().Trim();
+                    itemBag = dr["itemBag"].ToString().Trim();
+                    main = dr["main"].ToString().Trim();
+                   
+
+
+
+
+
+
+
+
+
+                    string strSql = string.Format("Insert into t_userLevel_conf (levelNum,exp,cardNum,cardGroupNum,fight,crit,hit,evade,cardBag,itemBag,main) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')", levelNum, exp, cardNum, cardGroupNum, fight, crit, hit, evade, cardBag, itemBag, main);
+                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
+                    SqlConnection sqlConnection = new SqlConnection(strConnection);
+                    try
+                    {
+                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
+                        sqlConnection.Open();
+                        SqlCommand sqlCmd = new SqlCommand();
+                        sqlCmd.CommandText = strSql;
+                        sqlCmd.Connection = sqlConnection;
+                        SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
+                        i++;
+                        sqlDataReader.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        WriteLog.WriteError(ex.ToString());
+
+                    }
+                    finally
+                    {
+                        sqlConnection.Close();
+                    }
+
+                }
+                return i;
+            }
     }
 }

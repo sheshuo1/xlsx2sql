@@ -39,7 +39,7 @@
             // 
             // btnToSql
             // 
-            this.btnToSql.Location = new System.Drawing.Point(12, 227);
+            this.btnToSql.Location = new System.Drawing.Point(12, 89);
             this.btnToSql.Name = "btnToSql";
             this.btnToSql.Size = new System.Drawing.Size(75, 23);
             this.btnToSql.TabIndex = 0;
@@ -67,7 +67,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 86);
+            this.label1.Location = new System.Drawing.Point(10, 126);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 3;
