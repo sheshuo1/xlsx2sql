@@ -1,8 +1,9 @@
 ***********************************************************************
-15:25:16
+14:42:46
 输出信息：错误信息
 异常信息：
-System.Data.SqlClient.SqlException (0x80131904): 在将 varchar 值 '-1' 转换成数据类型 bit 时失败。
+System.Data.SqlClient.SqlException (0x80131904): 违反了 PRIMARY KEY 约束 'PK_t_card_comb'。不能在对象 'dbo.t_card_comb' 中插入重复键。
+语句已终止。
    在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    在 System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
    在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
@@ -15,6 +16,6 @@ System.Data.SqlClient.SqlException (0x80131904): 在将 varchar 值 '-1' 转换�
    在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
    在 System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
    在 System.Data.SqlClient.SqlCommand.ExecuteReader()
-   在 xlsx2sql.FileSvr.t_vipInsetData(DataTable dt)
-ClientConnectionId:8585ffed-69b6-4b13-acdb-8832ac31499f
-Error Number:245,State:1,Class:16
+   在 xlsx2sql.FileSvr.t_card_combInsetData(DataTable dt) 位置 D:\xlsx2sql\xlsx2sql\FileSvr.cs:行号 307
+ClientConnectionId:9bd4cf55-568d-46e7-9cfd-82eeab0de365
+Error Number:2627,State:1,Class:14

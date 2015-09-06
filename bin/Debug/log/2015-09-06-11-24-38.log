@@ -1,0 +1,17 @@
+***********************************************************************
+11:24:38
+输出信息：错误信息
+异常信息：
+System.Data.SqlClient.SqlException (0x80131904): 用户 'admin' 登录失败。原因: 该帐户的密码已过期。
+   在 System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   在 System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   在 System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   在 System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   在 System.Data.ProviderBase.DbConnectionClosed.TryOpenConnection(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   在 System.Data.SqlClient.SqlConnection.TryOpenInner(TaskCompletionSource`1 retry)
+   在 System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   在 System.Data.SqlClient.SqlConnection.Open()
+   在 xlsx2sql.FileSvr.t_itemInsetData(DataTable dt) 位置 D:\xlsx2sql\xlsx2sql\FileSvr.cs:行号 933
+   在 xlsx2sql.Form1.startInset(String path) 位置 D:\xlsx2sql\xlsx2sql\Form1.cs:行号 773
+ClientConnectionId:950cc5ac-703d-467f-b63d-53eca12cc728
+Error Number:18487,State:1,Class:14

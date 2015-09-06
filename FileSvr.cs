@@ -94,12 +94,12 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 finally
                 {
@@ -130,7 +130,7 @@ namespace xlsx2sql
                     }
                     catch (Exception ex)
                     {
-                        WriteLog.WriteError(ex.ToString());
+                        WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                     finally
                     {
@@ -179,62 +179,67 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
-                foreach (DataRow dr in dt.Rows)
-                {
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
                     
-                    card_id = dr["card_id"].ToString().Trim();
-                    card_name = dr["card_name"].ToString().Trim();
-                    card_quality = dr["card_quality"].ToString().Trim();
-                    card_HP = dr["card_HP"].ToString().Trim();
-                    card_atk = dr["card_atk"].ToString().Trim();
-                    card_level = dr["card_level"].ToString().Trim();
-                    hp_growth = dr["hp_growth"].ToString().Trim();
-                    atk_growth = dr["atk_growth"].ToString().Trim();
-                    fight_growth = dr["fight_growth"].ToString().Trim();
-                    card_desc = dr["card_desc"].ToString().Trim();
-                    card_race = dr["card_race"].ToString().Trim();
-                    card_attr = dr["card_attr"].ToString().Trim();
-                    card_pic = dr["card_pic"].ToString().Trim();
-                    head_pic = dr["head_pic"].ToString().Trim();
+                            card_id = dr["card_id"].ToString().Trim();
+                            card_name = dr["card_name"].ToString().Trim();
+                            card_quality = dr["card_quality"].ToString().Trim();
+                            card_HP = dr["card_HP"].ToString().Trim();
+                            card_atk = dr["card_atk"].ToString().Trim();
+                            card_level = dr["card_level"].ToString().Trim();
+                            hp_growth = dr["hp_growth"].ToString().Trim();
+                            atk_growth = dr["atk_growth"].ToString().Trim();
+                            fight_growth = dr["fight_growth"].ToString().Trim();
+                            card_desc = dr["card_desc"].ToString().Trim();
+                            card_race = dr["card_race"].ToString().Trim();
+                            card_attr = dr["card_attr"].ToString().Trim();
+                            card_pic = dr["card_pic"].ToString().Trim();
+                            head_pic = dr["head_pic"].ToString().Trim();
                     
                    
-                    string strSql = string.Format("Insert into t_card (card_id,card_name,card_quality,card_HP,card_atk,card_level,hp_growth,atk_growth,fight_growth,card_desc,card_race,card_attr,card_pic,head_pic,passivity_skill) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}')", card_id,card_name,card_quality,card_HP,card_atk,card_level,hp_growth,atk_growth,fight_growth,card_desc,card_race,card_attr,card_pic,head_pic,passivity_skill);
-                    //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
-                   //// string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
-                        SqlCommand sqlCmd = new SqlCommand();
-                        sqlCmd.CommandText = strSql;
-                        sqlCmd.Connection = sqlConnection;
-                        SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                        i++;
-                        sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                            string strSql = string.Format("Insert into t_card (card_id,card_name,card_quality,card_HP,card_atk,card_level,hp_growth,atk_growth,fight_growth,card_desc,card_race,card_attr,card_pic,head_pic,passivity_skill) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}')", card_id,card_name,card_quality,card_HP,card_atk,card_level,hp_growth,atk_growth,fight_growth,card_desc,card_race,card_attr,card_pic,head_pic,passivity_skill);
+                            //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
+                           //// string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
+                           
+                    
+                                // SqlConnection sqlConnection = new SqlConnection(strConnection);
+                                
+                                SqlCommand sqlCmd = new SqlCommand();
+                                sqlCmd.CommandText = strSql;
+                                sqlCmd.Connection = sqlConnection;
+                                SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
+                                i++;
+                                sqlDataReader.Close();
+                    
 
+                        }
+                    }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + card_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -267,54 +272,58 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
-                foreach (DataRow dr in dt.Rows)
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
                 {
-
-                    card_id = dr["card_id"].ToString().Trim();
-                    material_id = dr["material_id"].ToString().Trim();
-                    material_num = dr["material_num"].ToString().Trim();
-                    need_gold = dr["need_gold"].ToString().Trim();
-                    success_rate = dr["success_rate"].ToString().Trim();
-
-
-
-                    string strSql = string.Format("Insert into t_card_comb (card_id,material_id,material_num,need_gold,success_rate) Values ('{0}','{1}','{2}','{3}','{4}')", card_id, material_id, material_num, need_gold, success_rate);
-                    //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
-                    //string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
-                        SqlCommand sqlCmd = new SqlCommand();
-                        sqlCmd.CommandText = strSql;
-                        sqlCmd.Connection = sqlConnection;
-                        SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                        i++;
-                        sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
 
+                        card_id = dr["card_id"].ToString().Trim();
+                        material_id = dr["material_id"].ToString().Trim();
+                        material_num = dr["material_num"].ToString().Trim();
+                        need_gold = dr["need_gold"].ToString().Trim();
+                        success_rate = dr["success_rate"].ToString().Trim();
+
+
+
+                        string strSql = string.Format("Insert into t_card_comb (card_id,material_id,material_num,need_gold,success_rate) Values ('{0}','{1}','{2}','{3}','{4}')", card_id, material_id, material_num, need_gold, success_rate);
+                        //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
+                        //string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
+                       
+                      
+                            // SqlConnection sqlConnection = new SqlConnection(strConnection);
+                           
+                            SqlCommand sqlCmd = new SqlCommand();
+                            sqlCmd.CommandText = strSql;
+                            sqlCmd.Connection = sqlConnection;
+                            SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
+                            i++;
+                            sqlDataReader.Close();
+                       
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + card_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -347,18 +356,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -373,28 +388,26 @@ namespace xlsx2sql
                     string strSql = string.Format("Insert into t_card_skill (card_id,skill_type,skill_name,description) Values ('{0}','{1}','{2}','{3}')", card_id, skill_type, skill_name, description);
                     //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
                     //string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                    
+                      // SqlConnection sqlConnection = new SqlConnection(strConnection);
+                       
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
-                        sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + card_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -428,18 +441,25 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -454,28 +474,26 @@ namespace xlsx2sql
                     string strSql = string.Format("Insert into t_chapter_event (chapter_id,event_id,event_rate) Values ('{0}','{1}','{2}')", chapter_id, event_id, event_rate);
                     //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
                    //// string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
+                   
                         // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                       
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
-                        sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + event_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -510,18 +528,25 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -537,28 +562,28 @@ namespace xlsx2sql
                     string strSql = string.Format("Insert into t_element_gift (g_id,g_type,g_value,g_sign,g_num,g_ratio) Values ('{0}','{1}','{2}','{3}','{4}','{5}')", g_id, g_type, g_value, g_sign, g_num, g_ratio);
                     //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
+                   
+                    
                         // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                       
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                  
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + g_value + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -596,18 +621,26 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -626,28 +659,28 @@ namespace xlsx2sql
                     string strSql = string.Format("Insert into t_element_shop (shop_id	,commodity,	exp_type	,exp_num	,item_id	,item_num,	free_time,	discount_pic,	g_id) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", shop_id, commodity, exp_type, exp_num, item_id, item_num, free_time, discount_pic, g_id);
                     //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
+                   
+                   
                         // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                      
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + shop_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -691,18 +724,25 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -727,28 +767,28 @@ namespace xlsx2sql
                     string strSql = string.Format("Insert into t_event (event_id,event_name,event_aim,event_desc,event_type,event_finish_type,event_isOpen,event_trigger,event_finish_need,event_rewards,event_canGiveup,event_level,event_rate,event_pic) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}')", event_id, event_name, event_aim, event_desc, event_type, event_finish_type, event_isOpen, event_trigger, event_finish_need, event_rewards, event_canGiveup, event_level, event_rate, event_pic);
                     //string strConnection = ConfigurationManager.ConnectionStrings["ConnectionStr"].ToString();
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
+                    
+                   
                         // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                      
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + event_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -781,18 +821,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                   
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                 SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -804,28 +850,28 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_init_card_group (group_id,card_id) Values ('{0}','{1}')", group_id, card_id);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
+                   
+                   
                         // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                       
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                  
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + card_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -867,18 +913,26 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -898,28 +952,26 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_item (item_id,item_name,item_type,item_desc,type_desc,item_value,item_quality,item_recycle,map_id) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", item_id,item_name,item_type,item_desc,type_desc,item_value,item_quality,item_recycle,map_id);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
+                   
                         // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                        
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + item_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -955,18 +1007,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -981,28 +1039,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_item_comb (item_id,material_id,material_num,m_ratio) Values ('{0}','{1}','{2}','{3}')", item_id, material_id, material_num, m_ratio);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + item_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1038,18 +1093,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1064,28 +1125,24 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_item_enlarge (add_num,need_gold,need_item) Values ('{0}','{1}','{2}')", add_num, need_gold, need_item);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                    
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + add_num + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1128,18 +1185,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1160,28 +1223,24 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_map (map_id,map_name,min_level,max_level,map_desc,map_group_id,next_map,event_odds,map_level) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", map_id, map_name, min_level, max_level, map_desc, map_group_id, next_map, event_odds, map_level);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                    
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + map_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1221,18 +1280,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1251,28 +1316,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_map_group (map_group_id,map_group_name,need_main,screen_id,PosXX,PosYY) Values ('{0}','{1}','{2}','{3}','{4}','{5}')", map_group_id, map_group_name, need_main, t_map_chapter, PosXX, PosYY);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                    
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + map_group_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1310,18 +1372,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                 SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1338,28 +1406,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_map_monster (map_id,monster_id,mm_rate,reward_name) Values ('{0}','{1}','{2}','{3}')", map_id, monster_id, mm_rate, reward_name);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + map_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1408,61 +1473,64 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                   
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
-                foreach (DataRow dr in dt.Rows)
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
                 {
-
-
-                    monster_id = dr["monster_id"].ToString().Trim();
-                    monster_name = dr["monster_name"].ToString().Trim();
-                    monster_desc = dr["monster_desc"].ToString().Trim();
-                    monster_type = dr["monster_type"].ToString().Trim();
-                    monster_levle = dr["monster_levle"].ToString().Trim();
-                    crit_rate = dr["crit_rate"].ToString().Trim();
-                    hit_rate = dr["hit_rate"].ToString().Trim();
-                    evade_rate = dr["evade_rate"].ToString().Trim();
-                    head_pic = dr["head_pic"].ToString().Trim();
-
-
-
-
-
-
-                    string strSql = string.Format("Insert into t_monster (monster_id,monster_name,monster_desc,monster_type,monster_level,crit_rate,hit_rate,evade_rate,head_pic) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", monster_id, monster_name, monster_desc, monster_type, monster_levle, crit_rate, hit_rate, evade_rate, head_pic);
-                   // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
+                    foreach (DataRow dr in dt.Rows)
                     {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+
+
+                        monster_id = dr["monster_id"].ToString().Trim();
+                        monster_name = dr["monster_name"].ToString().Trim();
+                        monster_desc = dr["monster_desc"].ToString().Trim();
+                        monster_type = dr["monster_type"].ToString().Trim();
+                        monster_levle = dr["monster_levle"].ToString().Trim();
+                        crit_rate = dr["crit_rate"].ToString().Trim();
+                        hit_rate = dr["hit_rate"].ToString().Trim();
+                        evade_rate = dr["evade_rate"].ToString().Trim();
+                        head_pic = dr["head_pic"].ToString().Trim();
+
+
+
+
+
+
+                        string strSql = string.Format("Insert into t_monster (monster_id,monster_name,monster_desc,monster_type,monster_level,crit_rate,hit_rate,evade_rate,head_pic) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}')", monster_id, monster_name, monster_desc, monster_type, monster_levle, crit_rate, hit_rate, evade_rate, head_pic);
+                        // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
+
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + monster_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1523,18 +1591,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                  
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                 SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1568,28 +1642,24 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_monster_card (monster_id,card_id,card_name,card_nick,card_level,card_status,card_exp,intensify_level,card_quality,card_HP,card_atk,hp_growth,atk_growth,fight_growth,card_desc,card_race,card_attr,card_addTime,phase_exp,card_pic,head_pic) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}')", monster_id, card_id, card_name, card_nick, card_level, card_status, card_exp, intensify_level, card_quality, card_HP, card_atk, hp_growth, atk_growth, fight_growth, card_desc, card_race, card_attr, card_addTime, phase_exp, card_pic, head_pic);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + monster_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1636,18 +1706,25 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                   
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1666,28 +1743,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_monster_reward (rg_id,r_type,r_value,r_num,r_ratio) Values ('{0}','{1}','{2}','{3}','{4}')", rg_id, r_type, r_value, r_num, r_ratio);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + rg_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1733,18 +1807,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1766,28 +1846,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_pvp_shop (s_id,s_name,s_type,v_type,s_value,s_num,s_price,s_rate) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')", s_id, s_name, s_type, v_type, s_value, s_num, s_price, s_rate);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + s_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1830,18 +1907,25 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                   
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+                 SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1860,28 +1944,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_reward_group (id,group_name,reward_rate,is_win) Values ('{0}','{1}','{2}','{3}')", id, group_name, reward_rate, is_win);
                    // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
-                        
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                   
 
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -1942,18 +2023,24 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                   
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -1991,28 +2078,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_vip (vip_id,topUp_num,mopUp,buy_main,buy_gold,reset_boss,buy_athletics,speed_onHook,unlock_boss,offLine,unlock_ath_cd,unlock_skip_ath,unlock_random_gold,dispatch_time_reduction,accelerate_dispatch,boss_gold,random_event_sum,dispatch_gold_add,event_refresh,dispatch_meanwhile_num,unlock_finish_dispatch,unlock_finish_all_random) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}','{11}','{12}','{13}','{14}','{15}','{16}','{17}','{18}','{19}','{20}','{21}')", vip_id, topUp_num, mopUp, buy_main, buy_gold, reset_boss, buy_athletics, speed_onHook, unlock_boss, offLine, unlock_ath_cd, unlock_skip_ath, unlock_random_gold, dispatch_time_reduction, accelerate_dispatch, boss_gold, random_event_sum, dispatch_gold_add, event_refresh, dispatch_meanwhile_num, unlock_finish_dispatch, unlock_finish_all_random);
                     // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
+                    
 
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + vip_id + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
@@ -2060,18 +2144,25 @@ namespace xlsx2sql
                     sqlCmd.CommandText = strSql1;
                     sqlCmd.Connection = sqlConnection1;
                     SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
-                    i++;
+                    
                     sqlDataReader.Close();
                 }
                 catch (Exception ex)
                 {
-                    WriteLog.WriteError(ex.ToString());
+                    WriteLog.WriteError(ex.ToString());DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 }
                 finally
                 {
                     sqlConnection1.Close();
                 }
+
+
+
+                SqlConnection sqlConnection = new SqlConnection(strConnection);
+                sqlConnection.Open();
+                try
+                {
                 foreach (DataRow dr in dt.Rows)
                 {
 
@@ -2099,28 +2190,25 @@ namespace xlsx2sql
 
                     string strSql = string.Format("Insert into t_userLevel_conf (levelNum,exp,cardNum,cardGroupNum,fight,crit,hit,evade,cardBag,itemBag,main) Values ('{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}')", levelNum, exp, cardNum, cardGroupNum, fight, crit, hit, evade, cardBag, itemBag, main);
                     // string strConnection = "Server=.;DataBase=HW;Uid=admin;pwd=admin;";
-                    SqlConnection sqlConnection = new SqlConnection(strConnection);
-                    try
-                    {
-                        // SqlConnection sqlConnection = new SqlConnection(strConnection);
-                        sqlConnection.Open();
+                   
                         SqlCommand sqlCmd = new SqlCommand();
                         sqlCmd.CommandText = strSql;
                         sqlCmd.Connection = sqlConnection;
                         SqlDataReader sqlDataReader = sqlCmd.ExecuteReader();
                         i++;
                         sqlDataReader.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        WriteLog.WriteError(ex.ToString());
+                   
 
-                    }
-                    finally
-                    {
-                        sqlConnection.Close();
-                    }
+                }
+                }
+                catch (Exception ex)
+                {
+                    WriteLog.WriteError("出错ID：" + levelNum + "|" + ex.ToString()); DialogResult error = MessageBox.Show(ex.Message.ToString(), "出错！", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                }
+                finally
+                {
+                    sqlConnection.Close();
                 }
                 return i;
             }
