@@ -817,7 +817,15 @@ namespace xlsx2sql
                      for (int i = 0; i < count; i++)
                      {
                          DataRow di = dt.Rows[i];
+                         for (int j = i + 1; j < count; j++)
+                         {
 
+                             DataRow dj = dt.Rows[j];
+                             if (di["add_num"].ToString().Trim() == dj["add_num"].ToString().Trim())
+                             {
+                                 error += di["add_num"].ToString() + "重复!\r\n";
+                             }
+                         }
 
                          if (di["add_num"].ToString() == null || di["add_num"].ToString() == "" || Regex.IsMatch(di["add_num"].ToString().Trim(), @"^[0-9]+$") == false)
                          {
@@ -1005,7 +1013,15 @@ namespace xlsx2sql
                      for (int i = 0; i < count; i++)
                      {
                          DataRow di = dt.Rows[i];
+                         for (int j = i + 1; j < count; j++)
+                         {
 
+                             DataRow dj = dt.Rows[j];
+                             if (di["monster_id"].ToString().Trim() == dj["monster_id"].ToString().Trim())
+                             {
+                                 error += di["monster_id"].ToString() + "重复!\r\n";
+                             }
+                         }
 
                          if (di["monster_id"].ToString() == null || di["monster_id"].ToString() == "" || Regex.IsMatch(di["monster_id"].ToString().Trim(), @"^[0-9]{8}$") == false)
                          {
@@ -1064,7 +1080,7 @@ namespace xlsx2sql
                      for (int i = 0; i < count; i++)
                      {
                          DataRow di = dt.Rows[i];
-
+                       
 
                          if (di["monster_id"].ToString() == null || di["monster_id"].ToString() == "" || Regex.IsMatch(di["monster_id"].ToString().Trim(), @"^[0-9]{8}$") == false)
                          {
@@ -1154,7 +1170,15 @@ namespace xlsx2sql
                      for (int i = 0; i < count; i++)
                      {
                          DataRow di = dt.Rows[i];
+                         for (int j = i + 1; j < count; j++)
+                         {
 
+                             DataRow dj = dt.Rows[j];
+                             if (di["s_id"].ToString().Trim() == dj["s_id"].ToString().Trim())
+                             {
+                                 error += di["s_id"].ToString() + "重复!\r\n";
+                             }
+                         }
 
                          if (di["s_id"].ToString() == null || di["s_id"].ToString() == "" || Regex.IsMatch(di["s_id"].ToString().Trim(), @"^[0-9]{6}$") == false)
                          {
@@ -1277,7 +1301,29 @@ namespace xlsx2sql
                      //开始进行数据验证
                      int count = dt.Rows.Count;
                      string error = "共有" + count + "行数据！\r\n";
+                     for (int i = 0; i < count; i++)
+                     {
+                         DataRow di = dt.Rows[i];
+                         for (int j = i + 1; j < count; j++)
+                         {
 
+                             DataRow dj = dt.Rows[j];
+                             if (di["levelNum"].ToString().Trim() == dj["levelNum"].ToString().Trim())
+                             {
+                                 error += di["levelNum"].ToString() + "重复!\r\n";
+                             }
+                         }
+
+                         if (di["levelNum"].ToString() == null || di["levelNum"].ToString() == "" || Regex.IsMatch(di["levelNum"].ToString().Trim(), @"^[0-9]+$") == false)
+                         {
+                             error += "第" + (i + 1) + "行" + "levelNum" + "不符合规则!\r\n";
+                         }
+                        
+
+
+
+
+                     }
                      //数据验证结束，提示结果，并选择是否继续导入
                      error += "是否继续导入数据？\r\n";
                      DialogResult result = MessageBox.Show(error, path, MessageBoxButtons.OKCancel, MessageBoxIcon.None);
